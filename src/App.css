@@ -13,8 +13,9 @@
   position:relative;
   left: 0;
   width: 500px;
-  height: 60px;
+  height: 50px;
   margin-bottom: 10px;
+  scale: 1 1;
 }
 
 .toDoDesc {
@@ -22,11 +23,12 @@
 }
 
 .deleting {
-  transition: all 0.8s ease-in-out;
-  left: -40px;
+  transition: all 0.3s ease-in-out;
+  left: -300px;
   opacity: 0;
   height: 0;  
   margin-bottom: 0;
+  scale: 1 0;
 }
 
 input {

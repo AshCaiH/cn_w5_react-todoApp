@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FaTrashCan, FaPlus } from 'react-icons/fa6';
+import { FaTrashCan, FaPlus, FaCheck } from 'react-icons/fa6';
 import { FaRegEdit } from 'react-icons/fa';
 import './App.css'
 
@@ -22,9 +22,10 @@ const startingItems = [new ToDoItem("Finish the todo assignment."), new ToDoItem
 
 function App() {
   const [items, setItems] = useState(startingItems);
+  const [rerender, setRerender] = useState(0);
 
   const addItem = () => {
-    const item = new ToDoItem("Default description " + items.length);
+    const item = new ToDoItem("To Do Item " + items.length);
     const tempItems = ([...items]);
     tempItems.push(item);
     setItems(tempItems);
@@ -36,15 +37,17 @@ function App() {
     setItems([...items]) // Force rerender.
   }
 
-  const removeItem = (selectedItem) => {
-    const tempItems = items;
+  // Starts the deletion animation. An onTransitionEnd listener on the item itself
+  // will remove the item from the list after the animation finishes.
+  const queueRemoveItem = (selectedItem) => {
     selectedItem.deleting = true;
-    setItems([...tempItems])    
-    
-    setTimeout(() => {
-      tempItems.splice(items.indexOf(selectedItem), 1);
-      setItems([...tempItems]) // Force rerender.
-    }, 800);
+    setRerender(rerender + 1);
+  }
+
+  const removeItemFromList = (item) => {
+    if (!item || !item.deleting) return;
+    let tempItems = items.splice(items.indexOf(item), 1);
+    setItems([...tempItems]);
   }
 
   return (
@@ -57,13 +60,14 @@ function App() {
         }
 
         return (
-          <div key={index} className={classes}>
+          <div key={index} className={classes} onTransitionEnd={(e, item) => removeItemFromList(item)}>
             {item.editMode === true ? 
-              (<input type="text" className="editable toDoDesc" onChange={() => {}} value={item.desc}></input>) :
+              (<input type="text" className="editable toDoDesc" onChange={(e) => {item.desc = e.target.value}} defaultValue={item.desc} autoFocus onFocus={(e) => e.target.select()} ></input>) :
               (<p className="toDoDesc">{item.desc}</p>)
             }
-            <button onClick={() => editItem(item)}><FaRegEdit /></button>
-            {(!item.deleting) && <button onClick={() => removeItem(item)}><FaTrashCan/></button>}
+            {(!item.deleting) && <button onClick={() => editItem(item)}><FaRegEdit /></button>}
+            {(!item.deleting) && <button onClick={() => queueRemoveItem(item)}><FaTrashCan/></button>}
+            {(!item.deleting) && <button onClick={() => queueRemoveItem(item)}><FaCheck/></button>}
           </div>
         )
       })}
