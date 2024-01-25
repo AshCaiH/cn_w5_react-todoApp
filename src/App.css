@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   align-self: flex-start;
-  width:100vh;
+  width:100vw;
 }
 
 .toDoCard {
@@ -27,7 +27,7 @@
   mix-blend-mode: multiply;
   opacity: 0;
   scale: 2;
-  transition: all 0.3s cubic-bezier(.61,.01,1,.21);
+  transition: 0.3s cubic-bezier(.61,.01,1,.21);
 }
 
 .complete .imgComplete {
@@ -41,7 +41,7 @@
 
 .toDoSpacer {
   width: 260px;
-  transition: all 0.3s ease-in;
+  transition: all 0.3s ease-out;
 }
 
 .complete .toDoSpacer {
@@ -63,6 +63,8 @@
   opacity: 0;
   height: 0;
   scale: 1 0;
+  margin: 0;
+  padding: 0;
 }
 
 input {

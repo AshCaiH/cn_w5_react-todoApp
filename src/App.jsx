@@ -9,15 +9,10 @@ class ToDoItem {
     this.desc = desc;
     this.complete = false;
     this.editMode = false;
-    this.deleting = false;
+    this.deleting = false;  // Is in the process of being deleted.
+    
     // Rotates the "complete" stamp randomly for each item.
     this.stampRotation = Math.random() * 30 - 15;
-  }
-
-  render() {
-    return (
-      <></>
-    )
   }
 }
 
@@ -47,37 +42,39 @@ function App() {
     setRerender(rerender + 1);
   }
 
-  const removeItemFromList = (item) => {
-    if (!item || !item.deleting) return;
-    console.log("Deleting");
-    let tempItems = items.splice(items.indexOf(item), 1);
-    setItems([...tempItems]);
+  const removeItemFromList = (e, selectedItem) => {
+    if (!e.target.classList.contains("toDoCard") ) return;
+
+    
+    // console.log("Deleting");
+    // let tempItems = items.splice(items.indexOf(item), 1);
+    // setItems([...tempItems]);
   }
 
-  const markComplete = (item) => {
-    item.complete = !item.complete;
+  const markComplete = (selectedItem) => {
+    selectedItem.complete = !selectedItem.complete;
     setRerender(rerender + 1);
   }
 
   return (
     <>
+      {/* Remove deleted items from the list */}      
       {items.map((item, index) => {
         let classes = "toDoCard";
         if (item.deleting === true) classes += " deleting";
         if (item.complete === true) classes += " complete";
 
         return (
-          <div key={index} className={classes} onTransitionEnd={(e, item) => removeItemFromList(item)}>
+          <div key={index} className={classes} onTransitionEnd={(e) => removeItemFromList(e, item)}>
             <img src={imgComplete} className="imgComplete" style={{rotate: item.stampRotation + "deg"}}/>
             <div className="toDoSpacer"></div>
             {item.editMode === true ? 
               (<input type="text" className="editable toDoDesc" onChange={(e) => {item.desc = e.target.value}} defaultValue={item.desc} autoFocus onFocus={(e) => e.target.select()} ></input>) :
               (<p className="toDoDesc">{item.desc}</p>)
             }
-            {/* Don't show the buttons if the item's being deleted. */}
-            {(!item.deleting) && <button onClick={() => editItem(item)}><FaRegEdit /></button>}
-            {(!item.deleting) && <button onClick={() => queueRemoveItem(item)}><FaTrashCan/></button>}
-            {(!item.deleting) && <button onClick={() => markComplete(item)}><FaCheck/></button>}
+            <button onClick={!item.deleting ? (() => editItem(item)) : () => {} }><FaRegEdit /></button>
+            <button onClick={!item.deleting ? (() => queueRemoveItem(item)) : () => {} }><FaTrashCan /></button>
+            <button onClick={!item.deleting ? (() => markComplete(item)) : () => {} }><FaCheck /></button>
           </div>
         )
       })}
