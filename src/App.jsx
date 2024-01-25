@@ -30,7 +30,7 @@ function App() {
   const [items, setItems] = useState(startingItems);
 
   const addItem = () => {
-    const item = new ToDoItem("To Do Item " + items.length);
+    const item = new ToDoItem("To Do Item " + index);
     const tempItems = ([...items]);
 
     tempItems.push(item);
@@ -101,6 +101,7 @@ function App() {
                   onFocus={(e) => e.target.select()} 
                   // Deactivates edit mode when textbox isn't in focus.
                   onBlur={() => editItem(null)}> 
+                  
                   </input>) :
                 (<p className="toDoDesc">{item.desc}</p>)
               }

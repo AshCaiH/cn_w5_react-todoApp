@@ -24,6 +24,8 @@ h2 {
 .toDoCards {
   display: flex;
   flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .toDoCard {
@@ -31,20 +33,21 @@ h2 {
   flex-direction: row;  
   position:relative;
   left: 0;
+  padding-right: 10px;;
   width: 600px;
-  height: 60px;
+  min-height: 60px;
   margin-bottom: 10px;
   scale: 1 1;  
   transition: all 0.3s ease-in-out;
   overflow: hidden;
-  background-color: #F9F9F9;
+  background-color: #F4F4F4;
   align-items: center;
 }
 
 .imgComplete {
   position:absolute;
   height: 83px;
-  top: -11px;
+  align-self: center;
   mix-blend-mode: multiply;
   opacity: 0;
   scale: 2;
@@ -73,6 +76,7 @@ h2 {
   width:100%;
   opacity: 1;
   transition: all 0.3s ease;
+  margin-right:10px;
 }
 
 .complete .toDoDesc {
