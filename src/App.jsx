@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaTrashCan, FaPlus, FaCheck, FaCrown } from 'react-icons/fa6';
 import { FaRegEdit } from 'react-icons/fa';
 import { BiSolidCrown } from "react-icons/bi";
@@ -17,7 +17,6 @@ class ToDoItem {
     this.complete = false;
     this.editMode = false;
     this.deleting = false;  // Is in the process of being deleted.
-    this.deleted = false; // Can be removed from the list;
     
     // Rotates the "complete" stamp randomly for each item.
     this.stampRotation = Math.random() * 30 - 15;
@@ -72,6 +71,16 @@ function App() {
 
   let completedTasks = 0;
   items.map((item) => {if (item.complete) completedTasks += 1})
+
+  const keyPress = (e) => {
+    // Listens for Enter keypress, and exits edit mode.
+    if (e.key == "Enter") editItem(null);
+  }
+
+  useEffect(() => {
+    document.addEventListener("keydown", keyPress);
+    return () => document.removeEventListener("keydown" , keyPress);
+  });
 
   return (
     <>
