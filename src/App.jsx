@@ -1,24 +1,10 @@
 import { useState, useEffect } from 'react'
 import { FaPlus } from 'react-icons/fa6';
 import { BiSolidCrown } from "react-icons/bi";
-import Card from "./TodoCard";
+import { Card, ToDoItem } from "./TodoCard";
 import './App.css'
 
-function App() {  
-  class ToDoItem {
-    constructor (id, desc) {
-      // Set the index here so each individual item can be tracked separately.
-      // Prevents problems when items are removed from the list.
-      this.index = id;
-      this.desc = desc;
-      this.complete = false;
-      this.editMode = false;
-      this.deleting = false;  // Is in the process of being deleted.
-      
-      // Rotates the "complete" stamp randomly for each item.
-      this.stampRotation = Math.random() * 30 - 15;
-    }
-  }
+function App() {
   
   const [startingItems, setStartingItems] = useState([
     new ToDoItem(0, "Finish making the todo app."),
@@ -28,59 +14,18 @@ function App() {
   const [index, setIndex] = useState(startingItems.length);
 
   const addItem = () => {
-    const item = new ToDoItem(index, "New Item " + index);
+    const item = new ToDoItem(index, "Item " + (index + 1), true);
     const tempItems = ([...items]);
 
     tempItems.push(item);
-    editItem(item);
+    // editItem(item);
     setItems(tempItems);
     setIndex(index + 1);
   }
-
-  const editItem = (selectedItem) => {
-    items.map((item) => item.editMode = false); // Set all items editModes to false;
-    if (selectedItem) selectedItem.editMode = true;
-    refreshList(); // Force rerender
-  }
-
-  // Starts the deletion animation. An onTransitionEnd listener on the item itself
-  // will remove the item from the list after the animation finishes.
-  const queueRemoveItem = (selectedItem) => {
-    selectedItem.deleting = true;
-    refreshList();
-  }
-
-  const finishRemoveItem = (e, selectedItem) => {
-    if (!e.target.classList.contains("toDoCard") ) return;
-    selectedItem.deleted = true;
-    refreshList();
-  }
-
-  // Removes items from the list 
-  const refreshList = () => {
-    let tempItems = []
-    items.map((item) => {if (!item.deleted) tempItems.push(item)});
-    setItems(tempItems);
-  }
-
-  const markComplete = (selectedItem) => {
-    selectedItem.complete = !selectedItem.complete;
-    refreshList();
-  }
-
+  
   // Keep track of how many tasks have been completed.
   let completedTasks = 0;
   items.map((item) => {if (item.complete) completedTasks += 1})
-
-  const keyPress = (e) => {
-    // Listens for Enter keypress, and exits edit mode.
-    if (e.key == "Enter") editItem(null);
-  }
-
-  useEffect(() => {
-    document.addEventListener("keydown", keyPress);
-    return () => document.removeEventListener("keydown" , keyPress);
-  });
 
   return (
     <>
@@ -89,20 +34,17 @@ function App() {
 
       <div className="meterHolder">
         <div className="meter"
-            style={{width: (completedTasks/items.length) * 100 + "%"}}>
+          style={{width: (completedTasks/items.length) * 100 + "%"}}>
         </div>
       </div>
-      <div className="toDoCards">
-        {/* Remove deleted items from the list */}      
+      <div className="toDoCards">  
         {items.map((item) => {
           return (
             <Card 
               key={item.index} 
               item={item}
-              editItem={editItem}
-              queueRemoveItem={queueRemoveItem}
-              finishRemoveItem={finishRemoveItem}
-              markComplete={markComplete}
+              items={items}
+              setItems={setItems}
             />
           )
         })}
