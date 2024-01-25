@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import { FaTrashCan, FaPlus, FaCheck, FaCrown } from 'react-icons/fa6';
-import { FaRegEdit } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa6';
 import { BiSolidCrown } from "react-icons/bi";
-import imgComplete from "./assets/complete.png";
+import Card from "./TodoCard";
 import './App.css'
 
 let index = 0;
@@ -104,26 +103,7 @@ function App() {
           if (item.complete === true) classes += " complete";
 
           return (
-            <div key={item.index} className={classes} onTransitionEnd={(e) => finishRemoveItem(e, item)}>
-              <img src={imgComplete} className="imgComplete" style={{rotate: item.stampRotation + "deg"}}/>
-              <div className="toDoSpacer"></div>
-              {item.editMode === true ? 
-                (<input type="text" 
-                  className="editable toDoDesc" 
-                  onChange={(e) => {item.desc = e.target.value}} 
-                  defaultValue={item.desc} 
-                  autoFocus 
-                  onFocus={(e) => e.target.select()} 
-                  // Deactivates edit mode when textbox isn't in focus.
-                  onBlur={() => editItem(null)}> 
-                  
-                  </input>) :
-                (<p className="toDoDesc">{item.desc}</p>)
-              }
-              <button onClick={!item.deleting ? (() => editItem(item)) : () => {} }><FaRegEdit /></button>
-              <button onClick={!item.deleting ? (() => queueRemoveItem(item)) : () => {} }><FaTrashCan /></button>
-              <button onClick={!item.deleting ? (() => markComplete(item)) : () => {} }><FaCheck /></button>
-            </div>
+            <Card key={item.index} item={item} classes={classes}/>
           )
         })}
 
