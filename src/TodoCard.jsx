@@ -6,7 +6,7 @@ const Card = (props) => {
     const item = props.item;
 
     return (
-        <div className={props.classes} onTransitionEnd={(e) => finishRemoveItem(e, item)}>
+        <div className={props.classes} onTransitionEnd={(e) => props.finishRemoveItem(e, item)}>
             <img src={imgComplete} className="imgComplete" style={{rotate: item.stampRotation + "deg"}}/>
             <div className="toDoSpacer"></div>
             {item.editMode === true ? 
@@ -17,14 +17,14 @@ const Card = (props) => {
                 autoFocus 
                 onFocus={(e) => e.target.select()} 
                 // Deactivates edit mode when textbox isn't in focus.
-                onBlur={() => editItem(null)}> 
+                onBlur={() => props.editItem(null)}> 
                 
                 </input>) :
             (<p className="toDoDesc">{item.desc}</p>)
             }
-            <button onClick={!item.deleting ? (() => editItem(item)) : () => {} }><FaRegEdit /></button>
-            <button onClick={!item.deleting ? (() => queueRemoveItem(item)) : () => {} }><FaTrashCan /></button>
-            <button onClick={!item.deleting ? (() => markComplete(item)) : () => {} }><FaCheck /></button>
+            <button onClick={!item.deleting ? (() => props.editItem(item)) : () => {} }><FaRegEdit /></button>
+            <button onClick={!item.deleting ? (() => props.queueRemoveItem(item)) : () => {} }><FaTrashCan /></button>
+            <button onClick={!item.deleting ? (() => props.markComplete(item)) : () => {} }><FaCheck /></button>
         </div>
     )
 }

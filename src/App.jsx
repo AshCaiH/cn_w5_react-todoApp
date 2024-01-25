@@ -103,7 +103,15 @@ function App() {
           if (item.complete === true) classes += " complete";
 
           return (
-            <Card key={item.index} item={item} classes={classes}/>
+            <Card 
+              key={item.index} 
+              item={item} 
+              classes={classes}
+              editItem={editItem}
+              queueRemoveItem={queueRemoveItem}
+              finishRemoveItem={finishRemoveItem}
+              markComplete={markComplete}
+            />
           )
         })}
 
