@@ -77,6 +77,12 @@ function App() {
     <>
       <h1>To Do List</h1>
       <h2>Tasks Complete: {completedTasks} {completedTasks == items.length && <BiSolidCrown className="crown"/>}</h2>
+
+      <div className="meterHolder">
+        <div className="meter"
+            style={{width: (completedTasks/items.length) * 100 + "%"}}>
+        </div>
+      </div>
       <div className="toDoCards">
         {/* Remove deleted items from the list */}      
         {items.map((item) => {
@@ -112,7 +118,7 @@ function App() {
           )
         })}
 
-        <button onClick={addItem}><FaPlus/></button>
+        <button className="plusBtn" onClick={addItem}><FaPlus/></button>
       </div>
     </>
   )
