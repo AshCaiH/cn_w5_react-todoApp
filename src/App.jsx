@@ -50,14 +50,17 @@ function App() {
     setItems([...tempItems]);
   }
 
+  const markComplete = (item) => {
+    item.complete = !item.complete;
+    setRerender(rerender + 1);
+  }
+
   return (
     <>
       {items.map((item, index) => {
         let classes = "toDoCard";
-        if (item.deleting === true) {
-          console.log(item.deleting);
-          classes += " deleting";
-        }
+        if (item.deleting === true) classes += " deleting";
+        if (item.complete === true) classes += " complete";
 
         return (
           <div key={index} className={classes} onTransitionEnd={(e, item) => removeItemFromList(item)}>
@@ -65,9 +68,10 @@ function App() {
               (<input type="text" className="editable toDoDesc" onChange={(e) => {item.desc = e.target.value}} defaultValue={item.desc} autoFocus onFocus={(e) => e.target.select()} ></input>) :
               (<p className="toDoDesc">{item.desc}</p>)
             }
+            {/* Don't show the buttons if the item's being deleted. */}
             {(!item.deleting) && <button onClick={() => editItem(item)}><FaRegEdit /></button>}
             {(!item.deleting) && <button onClick={() => queueRemoveItem(item)}><FaTrashCan/></button>}
-            {(!item.deleting) && <button onClick={() => queueRemoveItem(item)}><FaCheck/></button>}
+            {(!item.deleting) && <button onClick={() => markComplete(item)}><FaCheck/></button>}
           </div>
         )
       })}
