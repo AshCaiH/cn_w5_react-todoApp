@@ -4,37 +4,37 @@ import { BiSolidCrown } from "react-icons/bi";
 import Card from "./TodoCard";
 import './App.css'
 
-let index = 0;
-
-class ToDoItem {
-  constructor (desc) {
-    // Set the index here so each individual item can be tracked separately.
-    // Prevents problems when items are removed from the list.
-    this.index = index;
-    index += 1;
-    this.desc = desc;
-    this.complete = false;
-    this.editMode = false;
-    this.deleting = false;  // Is in the process of being deleted.
-    
-    // Rotates the "complete" stamp randomly for each item.
-    this.stampRotation = Math.random() * 30 - 15;
+function App() {  
+  class ToDoItem {
+    constructor (id, desc) {
+      // Set the index here so each individual item can be tracked separately.
+      // Prevents problems when items are removed from the list.
+      this.index = id;
+      this.desc = desc;
+      this.complete = false;
+      this.editMode = false;
+      this.deleting = false;  // Is in the process of being deleted.
+      
+      // Rotates the "complete" stamp randomly for each item.
+      this.stampRotation = Math.random() * 30 - 15;
+    }
   }
-}
-
-const startingItems = [new ToDoItem("Finish making the todo app."), new ToDoItem("Add some polish."), new ToDoItem("Submit the assignment")];
-
-function App() {
+  
+  const [startingItems, setStartingItems] = useState([
+    new ToDoItem(0, "Finish making the todo app."),
+    new ToDoItem(1, "Add some polish."), 
+    new ToDoItem(2, "Submit the assignment")]);
   const [items, setItems] = useState(startingItems);
+  const [index, setIndex] = useState(startingItems.length);
 
   const addItem = () => {
-    const item = new ToDoItem("To Do Item " + index);
+    const item = new ToDoItem(index, "New Item " + index);
     const tempItems = ([...items]);
 
     tempItems.push(item);
     editItem(item);
     setItems(tempItems);
-
+    setIndex(index + 1);
   }
 
   const editItem = (selectedItem) => {
@@ -68,6 +68,7 @@ function App() {
     refreshList();
   }
 
+  // Keep track of how many tasks have been completed.
   let completedTasks = 0;
   items.map((item) => {if (item.complete) completedTasks += 1})
 
@@ -94,19 +95,10 @@ function App() {
       <div className="toDoCards">
         {/* Remove deleted items from the list */}      
         {items.map((item) => {
-
-          // Track number of completed tasks.
-          let completed = 0;
-          let classes = "toDoCard";
-
-          if (item.deleting === true) classes += " deleting";
-          if (item.complete === true) classes += " complete";
-
           return (
             <Card 
               key={item.index} 
-              item={item} 
-              classes={classes}
+              item={item}
               editItem={editItem}
               queueRemoveItem={queueRemoveItem}
               finishRemoveItem={finishRemoveItem}

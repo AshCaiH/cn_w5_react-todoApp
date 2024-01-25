@@ -5,8 +5,13 @@ import { FaRegEdit } from 'react-icons/fa';
 const Card = (props) => {
     const item = props.item;
 
+    let classes = "toDoCard";
+
+    if (item.deleting === true) classes += " deleting";
+    if (item.complete === true) classes += " complete";
+
     return (
-        <div className={props.classes} onTransitionEnd={(e) => props.finishRemoveItem(e, item)}>
+        <div className={classes} onTransitionEnd={(e) => props.finishRemoveItem(e, item)}>
             <img src={imgComplete} className="imgComplete" style={{rotate: item.stampRotation + "deg"}}/>
             <div className="toDoSpacer"></div>
             {item.editMode === true ? 
