@@ -28,7 +28,7 @@ input {
   background-color: rgb(192, 228, 135);
   height:100%;
   width:50%;
-  transition: all 0.5s cubic-bezier(.33,-0.77,.6,1.5);
+  transition: all 0.3s cubic-bezier(.36,-0.04,.2,1.38);
 }
 
 #root {
