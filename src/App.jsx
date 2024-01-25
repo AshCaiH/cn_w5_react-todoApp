@@ -23,7 +23,7 @@ class ToDoItem {
   }
 }
 
-const startingItems = [new ToDoItem("Finish the todo page."), new ToDoItem("Polish it"), new ToDoItem("Submit the assignment")];
+const startingItems = [new ToDoItem("Finish making the todo app."), new ToDoItem("Add some polish."), new ToDoItem("Submit the assignment")];
 
 function App() {
   const [items, setItems] = useState(startingItems);

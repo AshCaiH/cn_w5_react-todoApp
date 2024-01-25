@@ -110,6 +110,7 @@ input {
   opacity: 1;
   transition: all 0.3s ease;
   margin-right:10px;
+  word-break: break-all; /* Force word wrap in case of a long string with no spaces */
 }
 
 .complete .toDoDesc {
