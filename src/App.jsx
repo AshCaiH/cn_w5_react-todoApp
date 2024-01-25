@@ -33,13 +33,15 @@ function App() {
     const tempItems = ([...items]);
 
     tempItems.push(item);
+    editItem(item);
     setItems(tempItems);
+
   }
 
   const editItem = (selectedItem) => {
     items.map((item) => item.editMode = false); // Set all items editModes to false;
     if (selectedItem) selectedItem.editMode = true;
-    setItems([...items]) // Force rerender.
+    refreshList(); // Force rerender
   }
 
   // Starts the deletion animation. An onTransitionEnd listener on the item itself
