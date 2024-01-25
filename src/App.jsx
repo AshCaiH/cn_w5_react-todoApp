@@ -4,12 +4,19 @@ import { FaRegEdit } from 'react-icons/fa';
 import imgComplete from "./assets/complete.png";
 import './App.css'
 
+let index = 0;
+
 class ToDoItem {
   constructor (desc) {
+    // Set the index here so each individual item can be tracked separately.
+    // Prevents problems when items are removed from the list.
+    this.index = index;
+    index += 1;
     this.desc = desc;
     this.complete = false;
     this.editMode = false;
     this.deleting = false;  // Is in the process of being deleted.
+    this.deleted = false; // Can be removed from the list;
     
     // Rotates the "complete" stamp randomly for each item.
     this.stampRotation = Math.random() * 30 - 15;
@@ -20,18 +27,18 @@ const startingItems = [new ToDoItem("Finish the todo page."), new ToDoItem("Poli
 
 function App() {
   const [items, setItems] = useState(startingItems);
-  const [rerender, setRerender] = useState(0);
 
   const addItem = () => {
     const item = new ToDoItem("To Do Item " + items.length);
     const tempItems = ([...items]);
+
     tempItems.push(item);
     setItems(tempItems);
   }
 
   const editItem = (selectedItem) => {
     items.map((item) => item.editMode = false); // Set all items editModes to false;
-    selectedItem.editMode = true;
+    if (selectedItem) selectedItem.editMode = true;
     setItems([...items]) // Force rerender.
   }
 
@@ -39,37 +46,49 @@ function App() {
   // will remove the item from the list after the animation finishes.
   const queueRemoveItem = (selectedItem) => {
     selectedItem.deleting = true;
-    setRerender(rerender + 1);
+    refreshList();
   }
 
-  const removeItemFromList = (e, selectedItem) => {
+  const finishRemoveItem = (e, selectedItem) => {
     if (!e.target.classList.contains("toDoCard") ) return;
+    selectedItem.deleted = true;
+    refreshList();
+  }
 
-    
-    // console.log("Deleting");
-    // let tempItems = items.splice(items.indexOf(item), 1);
-    // setItems([...tempItems]);
+  // Removes items from the list 
+  const refreshList = () => {
+    let tempItems = []
+    items.map((item) => {if (!item.deleted) tempItems.push(item)});
+    setItems(tempItems);
   }
 
   const markComplete = (selectedItem) => {
     selectedItem.complete = !selectedItem.complete;
-    setRerender(rerender + 1);
+    refreshList();
   }
 
   return (
     <>
       {/* Remove deleted items from the list */}      
-      {items.map((item, index) => {
+      {items.map((item) => {
         let classes = "toDoCard";
         if (item.deleting === true) classes += " deleting";
         if (item.complete === true) classes += " complete";
 
         return (
-          <div key={index} className={classes} onTransitionEnd={(e) => removeItemFromList(e, item)}>
+          <div key={item.index} className={classes} onTransitionEnd={(e) => finishRemoveItem(e, item)}>
             <img src={imgComplete} className="imgComplete" style={{rotate: item.stampRotation + "deg"}}/>
             <div className="toDoSpacer"></div>
             {item.editMode === true ? 
-              (<input type="text" className="editable toDoDesc" onChange={(e) => {item.desc = e.target.value}} defaultValue={item.desc} autoFocus onFocus={(e) => e.target.select()} ></input>) :
+              (<input type="text" 
+                className="editable toDoDesc" 
+                onChange={(e) => {item.desc = e.target.value}} 
+                defaultValue={item.desc} 
+                autoFocus 
+                onFocus={(e) => e.target.select()} 
+                // Deactivates edit mode when textbox isn't in focus.
+                onBlur={() => editItem(null)}> 
+                </input>) :
               (<p className="toDoDesc">{item.desc}</p>)
             }
             <button onClick={!item.deleting ? (() => editItem(item)) : () => {} }><FaRegEdit /></button>
