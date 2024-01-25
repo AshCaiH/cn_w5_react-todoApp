@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FaTrashCan, FaPlus, FaCheck } from 'react-icons/fa6';
 import { FaRegEdit } from 'react-icons/fa';
+import imgComplete from "./assets/complete.png";
 import './App.css'
 
 class ToDoItem {
@@ -9,6 +10,8 @@ class ToDoItem {
     this.complete = false;
     this.editMode = false;
     this.deleting = false;
+    // Rotates the "complete" stamp randomly for each item.
+    this.stampRotation = Math.random() * 30 - 15;
   }
 
   render() {
@@ -18,7 +21,7 @@ class ToDoItem {
   }
 }
 
-const startingItems = [new ToDoItem("Finish the todo assignment."), new ToDoItem("Test 2")];
+const startingItems = [new ToDoItem("Finish the todo page."), new ToDoItem("Polish it"), new ToDoItem("Submit the assignment")];
 
 function App() {
   const [items, setItems] = useState(startingItems);
@@ -46,6 +49,7 @@ function App() {
 
   const removeItemFromList = (item) => {
     if (!item || !item.deleting) return;
+    console.log("Deleting");
     let tempItems = items.splice(items.indexOf(item), 1);
     setItems([...tempItems]);
   }
@@ -64,6 +68,8 @@ function App() {
 
         return (
           <div key={index} className={classes} onTransitionEnd={(e, item) => removeItemFromList(item)}>
+            <img src={imgComplete} className="imgComplete" style={{rotate: item.stampRotation + "deg"}}/>
+            <div className="toDoSpacer"></div>
             {item.editMode === true ? 
               (<input type="text" className="editable toDoDesc" onChange={(e) => {item.desc = e.target.value}} defaultValue={item.desc} autoFocus onFocus={(e) => e.target.select()} ></input>) :
               (<p className="toDoDesc">{item.desc}</p>)

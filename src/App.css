@@ -12,27 +12,57 @@
   flex-direction: row;  
   position:relative;
   left: 0;
-  width: 500px;
+  width: 600px;
   height: 50px;
   margin-bottom: 10px;
   scale: 1 1;  
-  transition: all 0.3s ease-in-out;  
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.imgComplete {
+  position:absolute;
+  height: 80px;
+  top: -10px;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  scale: 2;
+  transition: all 0.3s cubic-bezier(.61,.01,1,.21);
+}
+
+.complete .imgComplete {
+  position:absolute;
+  height: 80px;
+  top: -10px;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+  scale: 1;
+}
+
+.toDoSpacer {
+  width: 260px;
+  transition: all 0.3s ease-in;
+}
+
+.complete .toDoSpacer {
+  width: 220px;
 }
 
 .toDoDesc {
   width:100%;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.complete .toDoDesc {
+  opacity: 0.5;  
+  transition: all 0.3s ease-out;
 }
 
 .deleting {
   opacity: 0;
-  height: 0;  
-  margin-bottom: 0;
+  height: 0;
   scale: 1 0;
-}
-
-.complete {
-  opacity: 0.3;
-  left: -20px;
 }
 
 input {
