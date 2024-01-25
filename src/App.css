@@ -1,3 +1,11 @@
+h1 {
+  margin-bottom: 0;
+}
+
+h2 {
+  margin-top: 0;
+}
+
 #root {
   display:flex;
   flex-direction: column;
@@ -7,23 +15,36 @@
   width:100vw;
 }
 
+.crown {
+  color: rgb(207, 167, 36);
+  position:relative;
+  top: 0.2rem;
+}
+
+.toDoCards {
+  display: flex;
+  flex-direction: column;
+}
+
 .toDoCard {
   display: flex;
   flex-direction: row;  
   position:relative;
   left: 0;
   width: 600px;
-  height: 50px;
+  height: 60px;
   margin-bottom: 10px;
   scale: 1 1;  
   transition: all 0.3s ease-in-out;
   overflow: hidden;
+  background-color: #F9F9F9;
+  align-items: center;
 }
 
 .imgComplete {
   position:absolute;
-  height: 80px;
-  top: -10px;
+  height: 83px;
+  top: -11px;
   mix-blend-mode: multiply;
   opacity: 0;
   scale: 2;
@@ -32,20 +53,20 @@
 
 .complete .imgComplete {
   position:absolute;
-  height: 80px;
-  top: -10px;
   mix-blend-mode: multiply;
   opacity: 0.5;
   scale: 1;
 }
 
 .toDoSpacer {
-  width: 260px;
+  width: 240px;
+  padding-right: 20px;
   transition: all 0.3s ease-out;
+  /* background-color: grey; */
 }
 
 .complete .toDoSpacer {
-  width: 220px;
+  padding-right: 0;
 }
 
 .toDoDesc {
