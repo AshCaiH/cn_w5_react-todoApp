@@ -10,8 +10,8 @@ class ToDoItem {
         this.index = id;
         this.desc = desc;
         this.complete = false;
-        this.editMode = isNew;
-        this.deleting = false;  // Starts the deletion process
+        this.editMode = isNew; // Newly added Cards are in editMode by default.
+        this.deleting = false; // Starts the deletion process
         
         // Rotates the "complete" stamp randomly for each item.
         this.stampRotation = Math.random() * 40 - 20;
@@ -19,19 +19,22 @@ class ToDoItem {
 }
 
 const Card = (props) => {
+    // Simplifying the variable names here to make the code cleaner further down.
     const item = props.item;
     const items = props.items;
     const setItems = props.setItems;    
 
+    // Update element classes for styling.
     let classes = "toDoCard";
-
     if (item.deleting === true) classes += " deleting";
     if (item.complete === true) classes += " complete";
 
     const editItem = (selectedItem) => {
-        items.map((item) => item.editMode = false); // Set all items editModes to false;
+        // Make sure edit mode is disabled for all items, 
+        // before enabling it for the specific item we want.
+        items.map((item) => item.editMode = false);
         if (selectedItem) selectedItem.editMode = true;
-        refreshList(); // Force rerender
+        refreshList();
     }
 
     // Starts the deletion animation. An onTransitionEnd listener on the item itself
@@ -41,13 +44,14 @@ const Card = (props) => {
         refreshList();
     }
 
+    // Removes the element from the list completely, now the animation's finished.
     const finishRemoveItem = (e, selectedItem) => {
         if (!e.target.classList.contains("toDoCard") ) return;
         selectedItem.deleted = true;
         refreshList();
     }
 
-    // Removes items from the list 
+    // Rerenders the page any time there are relevant changes in the list.
     const refreshList = () => {
         let tempItems = []
         items.map((item) => {
@@ -68,7 +72,8 @@ const Card = (props) => {
         // Listens for an enter key press and quits edit mode.
         if (e.key == "Enter") editItem(null);
     }
-        
+    
+    // Prevents more than one keydown event running every time the page rerenders.
     useEffect(() => {
         document.addEventListener("keydown", keyPress);
         return () => document.removeEventListener("keydown" , keyPress);
