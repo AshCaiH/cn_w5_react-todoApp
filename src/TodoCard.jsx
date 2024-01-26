@@ -29,7 +29,7 @@ const Card = (props) => {
     if (item.deleting === true) classes += " deleting";
     if (item.complete === true) classes += " complete";
 
-    const editItem = (selectedItem) => {
+    const editItem = (selectedItem, e) => {
         // Make sure edit mode is disabled for all items, 
         // before enabling it for the specific item we want.
         items.map((item) => item.editMode = false);
@@ -56,9 +56,6 @@ const Card = (props) => {
         let tempItems = []
         items.map((item) => {
             if (!item.deleted) tempItems.push(item)
-            // If an item should be in edit mode, run the editItem function.
-            // Required to automatically trigger edit mode on new items.
-            if (item.editMode) editItem(item); 
         });
         setItems(tempItems);
     }
@@ -96,7 +93,7 @@ const Card = (props) => {
                 </input>) :
             (<p className="toDoDesc">{item.desc}</p>)
             }
-            <button onClick={!item.deleting ? (() => editItem(item)) : () => {} }><FaRegEdit /></button>
+            <button onClick={!item.deleting ? ((e) => editItem(item, e)) : () => {} }><FaRegEdit /></button>
             <button onClick={!item.deleting ? (() => queueRemoveItem(item)) : () => {} }><FaTrashCan /></button>
             <button onClick={!item.deleting ? (() => markComplete(item)) : () => {} }><FaCheck /></button>
         </div>
