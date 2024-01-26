@@ -30,7 +30,7 @@ function App() {
   return (
     <>
       <h1>To Do List</h1>
-      <h2>Tasks Complete: {completedTasks} {completedTasks == items.length && <BiSolidCrown className="crown"/>}</h2>
+      <h2>Tasks Complete: {completedTasks} {(completedTasks == items.length && items.length > 0) && <BiSolidCrown className="crown"/>}</h2>
 
       <div className="meterHolder">
         <div className="meter"
