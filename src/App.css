@@ -38,6 +38,7 @@ input {
   justify-content: center;
   align-self: flex-start;
   width:100vw;
+  user-select: none;
 }
 
 .crown {
