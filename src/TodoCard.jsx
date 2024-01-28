@@ -91,7 +91,10 @@ const Card = (props) => {
                 onBlur={() => editItem(null)}> 
                 
                 </input>) :
-            (<p className="toDoDesc">{item.desc}</p>)
+            (<p className="toDoDesc"
+                onDoubleClick={(e) => editItem(item, e)}>
+                {item.desc}
+            </p>)
             }
             <button onClick={!item.deleting ? ((e) => editItem(item, e)) : () => {} }><FaRegEdit /></button>
             <button onClick={!item.deleting ? (() => queueRemoveItem(item)) : () => {} }><FaTrashCan /></button>
